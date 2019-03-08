@@ -40,8 +40,6 @@ public class Database {
         delegate.execSQL(sb.toString());
     }
 
-
-
     public final void deleteTable(Table table) {
 
     }

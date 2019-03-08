@@ -16,10 +16,6 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
         mDatabaseOperator = helper;
     }
 
-    private IDatabaseOperator getDatabaseOperator() {
-        return mDatabaseOperator;
-    }
-
     public String getTableName() {
         return getClass().getSimpleName();
     }
@@ -39,14 +35,27 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public int delete(long id) {
-        Query query = Query.from(getTableName()).equal("id", String.valueOf(id));
+    public int delete(Query query) {
         return mDatabaseOperator.delete(query);
     }
 
     @Override
-    public int deleteAll(List<Long> ids) {
-        Query query = Query.from(getTableName()).in("id", ids).log();
+    public int delete(String column, String value) {
+        Query query = Query.from(getTableName()).equal(column, value).log();
+        return mDatabaseOperator.delete(query);
+    }
+
+    @Override
+    public int deleteAll(Query query) {
+        if (query == null) {
+            query = Query.from(getTableName());
+        }
+        return mDatabaseOperator.deleteAll(query);
+    }
+
+    @Override
+    public int deleteAll(String column, List<String> values) {
+        Query query = Query.from(getTableName()).in(column, values).log();
         return mDatabaseOperator.deleteAll(query);
     }
 
@@ -61,26 +70,37 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public int update(long id, T t) {
-        Query query = Query.from(getTableName()).equal("id", id).log();
+    public int update(Query query, T t) {
         return mDatabaseOperator.update(query, t);
     }
 
     @Override
-    public int updateAll(List<Long> ids, List<T> t) {
-        Query query = Query.from(getTableName()).in("id", ids).log();
-        return mDatabaseOperator.updateAll(query, t);
+    public int updateAll(Query query, List<T> list) {
+        return mDatabaseOperator.updateAll(query, list);
     }
 
     @Override
-    public T query(long id) {
-        Query query = Query.from(getTableName()).equal("id", id).log();
+    public T query(Query query) {
         return mDatabaseOperator.query(query, getTableEntity());
     }
 
     @Override
-    public List<T> queryAll(List<Long> ids) {
-        Query query = Query.from(getTableName()).in("id", ids).log();
+    public T query(String column, String value) {
+        Query query = Query.from(getTableName()).equal(column, value).log();
+        return mDatabaseOperator.query(query, getTableEntity());
+    }
+
+    @Override
+    public List<T> queryAll(Query query) {
+        if (query == null) {
+            query = Query.from(getTableName());
+        }
+        return mDatabaseOperator.queryAll(query, getTableEntity());
+    }
+
+    @Override
+    public List<T> queryAll(String column, List<String> values) {
+        Query query = Query.from(getTableName()).in(column, values).log();
         return mDatabaseOperator.queryAll(query, getTableEntity());
     }
 

@@ -12,24 +12,34 @@ public interface ITableOperator<T extends ITableEntity<T>> {
 
     List<Long> addAll(List<T> list);
 
-    int delete(long id);
+    int delete(Query query);
 
-    int deleteAll(List<Long> ids);
+    int delete(String column, String value);
+
+    int deleteAll(Query query);
+
+    int deleteAll(String column, List<String> values);
 
     long replace(T t);
 
     long replaceAll(List<T> t);
 
-    int update(long id, T t);
+    int update(Query query, T t);
 
-    int updateAll(List<Long> ids, List<T> t);
+    int updateAll(Query query, List<T> list);
 
-    T query(long id);
+    T query(Query query);
 
-    List<T> queryAll(List<Long> ids);
+    T query(String column, String value);
+
+    List<T> queryAll(Query query);
+
+    List<T> queryAll(String column, List<String> values);
 
     T rawQuery(RawQuery rawQuery);
 
     List<T> rawQueryAll(RawQuery rawQuery);
+
+
 
 }

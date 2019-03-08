@@ -18,4 +18,6 @@ public class RawQuery {
     public String getSql() {
         return sql == null ? "" : sql;
     }
+
+
 }
