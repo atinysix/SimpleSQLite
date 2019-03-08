@@ -1,7 +1,6 @@
 package com.yuntianhe.simplesqlite.library;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class BaseTableEntity<T> implements ITableEntity<T> {
     }
 
     @Override
-    public T out(Cursor cursor) {
+    public T out(CursorWrapper cursor) {
         return null;
     }
 

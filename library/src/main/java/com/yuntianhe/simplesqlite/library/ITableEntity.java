@@ -19,7 +19,7 @@ public interface ITableEntity<T> {
      * @param cursor
      * @return
      */
-    T out(Cursor cursor);
+    T out(CursorWrapper cursor);
 
     ContentValues in(T entity);
 

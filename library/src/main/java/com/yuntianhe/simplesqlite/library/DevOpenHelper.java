@@ -141,7 +141,8 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
                 query.getHaving(),
                 query.getOrderBy());
         if (c != null && c.moveToFirst()) {
-            T entity = t.out(c);
+            CursorWrapper wrapper = new CursorWrapper(c);
+            T entity = t.out(wrapper);
             c.close();
             return entity;
         }
@@ -161,8 +162,9 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
                 query.getOrderBy(),
                 query.getLimit());
         if (c != null) {
+            CursorWrapper wrapper = new CursorWrapper(c);
             while (c.moveToNext()) {
-                T entity = t.out(c);
+                T entity = t.out(wrapper);
                 list.add(entity);
             }
             c.close();
@@ -175,7 +177,8 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(rawQuery.getSql(), null);
         if (c != null && c.moveToFirst()) {
-            T entity = t.out(c);
+            CursorWrapper wrapper = new CursorWrapper(c);
+            T entity = t.out(wrapper);
             c.close();
             return entity;
         }
@@ -188,8 +191,9 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
         List<T> list = new ArrayList<>();
         Cursor c = db.rawQuery(rawQuery.getSql(), null);
         if (c != null) {
+            CursorWrapper wrapper = new CursorWrapper(c);
             while (c.moveToNext()) {
-                T entity = t.out(c);
+                T entity = t.out(wrapper);
                 list.add(entity);
             }
             c.close();

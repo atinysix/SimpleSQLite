@@ -1,9 +1,9 @@
 package com.yuntianhe.simplesqlite.entity;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 
 import com.yuntianhe.simplesqlite.library.BaseTableEntity;
+import com.yuntianhe.simplesqlite.library.CursorWrapper;
 import com.yuntianhe.simplesqlite.table.TestTable;
 
 /**
@@ -46,11 +46,11 @@ public class TestData extends BaseTableEntity<TestData> {
     }
 
     @Override
-    public TestData out(Cursor cursor) {
+    public TestData out(CursorWrapper cursor) {
         TestData data = new TestData();
-        data.setId(cursor.getLong(cursor.getColumnIndex(TestTable._ID)));
-        data.setText(cursor.getString(cursor.getColumnIndex(TestTable.TEXT)));
-        data.setDuration(cursor.getInt(cursor.getColumnIndex(TestTable.DURATION)));
+        data.setId(cursor.getLong(TestTable._ID));
+        data.setText(cursor.getString(TestTable.TEXT));
+        data.setDuration(cursor.getInt(TestTable.DURATION));
         return data;
     }
 
