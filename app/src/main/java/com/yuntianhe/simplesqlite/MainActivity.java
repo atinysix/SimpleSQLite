@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 
         TestTable table = new TestTable();
 
+        // 插入数据
         List<TestData> list = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
             TestData data = new TestData();
@@ -30,9 +31,9 @@ public class MainActivity extends Activity {
             data.setDuration(i);
             list.add(data);
         }
-
         table.addAll(list);
 
+        // 查询数据
         Query q = Query.from(TestTable.TABLE_NAME)
                 .gt(TestTable.DURATION, "5000")
                 .page(20, 1);

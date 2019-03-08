@@ -216,7 +216,7 @@ public class Query {
 
     public Query page(int pageCount, int page) {
         StringBuilder sb = new StringBuilder();
-        sb.append(pageCount * page).append(", ").append(pageCount);
+        sb.append(pageCount * (page - 1)).append(", ").append(pageCount);
         this.limit = sb.toString();
         return this;
     }

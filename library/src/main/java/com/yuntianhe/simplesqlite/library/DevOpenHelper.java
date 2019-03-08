@@ -12,9 +12,7 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 11:43
  */
-public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabaseOperator, IDataBaseController {
-
-    private Database mDatabase;
+public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabaseOperator {
 
     public DevOpenHelper(Context context, String name, int version) {
         super(context, name, null, version);
@@ -22,24 +20,12 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
 
     @Override
     public final void onCreate(SQLiteDatabase db) {
-        mDatabase = new Database(db);
-        onCreate(mDatabase);
+        onCreate(new Database(db));
     }
 
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        mDatabase = new Database(db);
-        onUpgrade(mDatabase, oldVersion, newVersion);
-    }
-
-    @Override
-    public Database openReadableDatabase() {
-        return mDatabase;
-    }
-
-    @Override
-    public Database openWritableDatabase() {
-        return mDatabase;
+        onUpgrade(new Database(db), oldVersion, newVersion);
     }
 
     public abstract void onCreate(Database db);

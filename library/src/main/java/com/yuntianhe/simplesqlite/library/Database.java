@@ -2,6 +2,7 @@ package com.yuntianhe.simplesqlite.library;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * 描述:
@@ -27,7 +28,7 @@ public class Database {
         }
 
         final StringBuilder sb = new StringBuilder("create table if not exists " + tableName);
-        sb.append("( ");
+        sb.append("(");
         for (int i = 0, length = columns.length; i < length; i++) {
             String column = columns[i];
             sb.append(column);
@@ -36,6 +37,8 @@ public class Database {
             }
         }
         sb.append(")");
+
+        Log.w("Database", "db: " + sb.toString());
 
         delegate.execSQL(sb.toString());
     }
