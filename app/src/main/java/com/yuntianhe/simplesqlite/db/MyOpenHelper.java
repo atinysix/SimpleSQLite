@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.yuntianhe.simplesqlite.library.Database;
 import com.yuntianhe.simplesqlite.library.DevOpenHelper;
-import com.yuntianhe.simplesqlite.table.TeacherTable;
+import com.yuntianhe.simplesqlite.table.TestTable;
 
 /**
  * 描述:
@@ -18,7 +18,7 @@ public class MyOpenHelper extends DevOpenHelper {
 
     @Override
     public void onCreate(Database db) {
-        db.createTable(new TeacherTable());
+        db.createTable(new TestTable());
     }
 
     @Override

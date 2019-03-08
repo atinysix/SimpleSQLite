@@ -203,8 +203,21 @@ public class Query {
         return limit == null ? "" : limit;
     }
 
-    public Query limit(String limit) {
-        this.limit = limit;
+    public Query limit(int limit) {
+       return limit(0, limit);
+    }
+
+    public Query limit(int offset, int limit) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(offset).append(", ").append(limit);
+        this.limit = sb.toString();
+        return this;
+    }
+
+    public Query page(int pageCount, int page) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(pageCount * page).append(", ").append(pageCount);
+        this.limit = sb.toString();
         return this;
     }
 
