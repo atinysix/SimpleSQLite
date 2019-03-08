@@ -40,6 +40,11 @@ public class Query {
         return new Query(tableName);
     }
 
+    /**
+     * 注意：查询指定列的数据，在解析Cursor时，需要手动判断Cursor是否包含此列
+     * @param columns
+     * @return
+     */
     public Query colums(String... columns) {
         this.columns = columns;
         return this;

@@ -1,5 +1,6 @@
 package com.yuntianhe.simplesqlite.library;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -72,6 +73,11 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     @Override
     public int update(Query query, T t) {
         return mDatabaseOperator.update(query, t);
+    }
+
+    @Override
+    public int update(Query query, T t, HashMap<String, Object> map) {
+        return mDatabaseOperator.update(query, t, map);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.yuntianhe.simplesqlite.library;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public interface IDatabaseOperator {
     int deleteAll(Query query);
 
     <T extends ITableEntity<T>> int update(Query query, T t);
+
+    <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map);
 
     <T extends ITableEntity<T>> int updateAll(Query query, List<T> list);
 

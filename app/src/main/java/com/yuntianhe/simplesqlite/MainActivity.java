@@ -8,6 +8,7 @@ import com.yuntianhe.simplesqlite.library.Query;
 import com.yuntianhe.simplesqlite.table.TestTable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -33,11 +34,25 @@ public class MainActivity extends Activity {
         }
         table.addAll(list);
 
-        // 查询数据
+        // 分页查询多条数据
         Query q = Query.from(TestTable.TABLE_NAME)
                 .gt(TestTable.DURATION, "5000")
                 .page(20, 1);
         List<TestData> result = table.queryAll(q);
+
+        // 更新指定行指定列数据
+        Query q2 = Query.from(TestTable.TABLE_NAME)
+                .equal(TestTable._ID, "10");
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(TestTable.TEXT, "修改数据");
+        map.put(TestTable.DURATION, "99999");
+        table.update(q2, new TestData(), map);
+
+        // 查询指定行数据
+        Query q3 = Query.from(TestTable.TABLE_NAME)
+                .equal(TestTable._ID, "10");
+        TestData result2 = table.query(q3);
 
     }
 

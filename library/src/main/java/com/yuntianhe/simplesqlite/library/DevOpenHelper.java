@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -100,6 +101,12 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     public <T extends ITableEntity<T>> int update(Query query, T t) {
         SQLiteDatabase db = getWritableDatabase();
         return db.update(t.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+    }
+
+    @Override
+    public <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update(t.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
     }
 
     @Override

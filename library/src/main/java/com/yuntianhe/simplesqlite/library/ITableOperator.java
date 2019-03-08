@@ -1,5 +1,6 @@
 package com.yuntianhe.simplesqlite.library;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public interface ITableOperator<T extends ITableEntity<T>> {
 
     int update(Query query, T t);
 
+    int update(Query query, T t, HashMap<String, Object> map);
+
     int updateAll(Query query, List<T> list);
 
     T query(Query query);
@@ -39,7 +42,6 @@ public interface ITableOperator<T extends ITableEntity<T>> {
     T rawQuery(RawQuery rawQuery);
 
     List<T> rawQueryAll(RawQuery rawQuery);
-
 
 
 }

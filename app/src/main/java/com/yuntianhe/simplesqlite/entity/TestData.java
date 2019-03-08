@@ -3,14 +3,14 @@ package com.yuntianhe.simplesqlite.entity;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.yuntianhe.simplesqlite.library.ITableEntity;
+import com.yuntianhe.simplesqlite.library.BaseTableEntity;
 import com.yuntianhe.simplesqlite.table.TestTable;
 
 /**
  * 描述:
  * 作者: daiwj on 2019/3/8 12:35
  */
-public class TestData implements ITableEntity<TestData> {
+public class TestData extends BaseTableEntity<TestData> {
 
     private long id;
     private String text;
