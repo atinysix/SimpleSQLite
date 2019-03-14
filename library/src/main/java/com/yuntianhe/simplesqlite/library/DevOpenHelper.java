@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * 描述:
  * 作者: daiwj on 2019/2/22 11:43
@@ -40,18 +47,17 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public <T extends ITableEntity<T>> List<Long> addAll(List<T> list) {
+    public synchronized <T extends ITableEntity<T>> List<Long> addAll(List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
         try {
             db.beginTransaction();
             for (T t : list) {
-                long id = db.insert(t.getTableName(), null, t.in(t));
-                idList.add(id);
+                long rowId = db.insert(t.getTableName(), null, t.in(t));
+                idList.add(rowId);
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
-
         } finally {
             db.endTransaction();
         }
@@ -65,34 +71,25 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public <T extends ITableEntity<T>> long replaceAll(List<T> list) {
-        if (list == null) {
-            return -1;
-        }
-
+    public synchronized <T extends ITableEntity<T>> List<Long> replaceAll(List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
+        List<Long> idList = new ArrayList<>();
         try {
             db.beginTransaction();
             for (T t : list) {
-                db.replace(t.getTableName(), null, t.in(t));
+                long rowId = db.replace(t.getTableName(), null, t.in(t));
+                idList.add(rowId);
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            return -1;
         } finally {
             db.endTransaction();
         }
-        return list.size();
+        return idList;
     }
 
     @Override
-    public int delete(Query query) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
-    }
-
-    @Override
-    public int deleteAll(Query query) {
+    public synchronized int delete(Query query) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
     }
@@ -107,27 +104,6 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     public <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map) {
         SQLiteDatabase db = getWritableDatabase();
         return db.update(t.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
-    }
-
-    @Override
-    public <T extends ITableEntity<T>> int updateAll(Query query, List<T> list) {
-        if (list == null) {
-            return 0;
-        }
-
-        SQLiteDatabase db = getWritableDatabase();
-        try {
-            db.beginTransaction();
-            for (T t : list) {
-                db.update(t.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
-            }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            return 0;
-        } finally {
-            db.endTransaction();
-        }
-        return list.size();
     }
 
     @Override

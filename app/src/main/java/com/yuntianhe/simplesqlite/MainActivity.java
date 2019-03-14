@@ -7,7 +7,6 @@ import com.yuntianhe.simplesqlite.entity.TestData;
 import com.yuntianhe.simplesqlite.library.Query;
 import com.yuntianhe.simplesqlite.table.TestTable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,11 +35,11 @@ public class MainActivity extends Activity {
 
         // 分页查询多条数据
         Query q = Query.from(TestTable.TABLE_NAME)
-                .colums(TestTable._ID)
+                .column(TestTable._ID)
                 .gt(TestTable.DURATION, "5000")
                 .page(20, 1);
         List<TestData> result = table.queryAll(q);
-//
+
         // 更新指定行指定列数据
         Query q2 = Query.from(TestTable.TABLE_NAME)
                 .equal(TestTable._ID, "10");
@@ -52,7 +51,7 @@ public class MainActivity extends Activity {
 
         // 查询指定行数据
         Query q3 = Query.from(TestTable.TABLE_NAME)
-                .colums(TestTable.TEXT)
+                .column(TestTable.TEXT)
                 .equal(TestTable._ID, "10");
         TestData result2 = table.query(q3);
 

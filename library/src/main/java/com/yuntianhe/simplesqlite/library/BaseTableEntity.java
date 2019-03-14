@@ -29,8 +29,10 @@ public class BaseTableEntity<T> implements ITableEntity<T> {
     @Override
     public final ContentValues in(HashMap<String, Object> map) {
         ContentValues cv = new ContentValues();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            cv.put(entry.getKey(), String.valueOf(entry.getValue()));
+        if (map != null) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                cv.put(entry.getKey(), String.valueOf(entry.getValue()));
+            }
         }
         return cv;
     }

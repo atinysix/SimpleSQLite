@@ -42,10 +42,11 @@ public class Query {
 
     /**
      * 注意：查询指定列的数据，在解析Cursor时，需要手动判断Cursor是否包含此列
+     *
      * @param columns
      * @return
      */
-    public Query colums(String... columns) {
+    public Query column(String... columns) {
         this.columns = columns;
         return this;
     }
@@ -209,7 +210,7 @@ public class Query {
     }
 
     public Query limit(int limit) {
-       return limit(0, limit);
+        return limit(0, limit);
     }
 
     public Query limit(int offset, int limit) {
@@ -223,6 +224,12 @@ public class Query {
         StringBuilder sb = new StringBuilder();
         sb.append(pageCount * (page - 1)).append(", ").append(pageCount);
         this.limit = sb.toString();
+        return this;
+    }
+
+    public Query clearSelection() {
+        selectionBuilder.delete(0, selectionBuilder.length());
+        selectionArgsBuilder.clear();
         return this;
     }
 
