@@ -34,7 +34,7 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * @param callback 异步回调
      * @return 受作用行id列表
      */
-    List<Long> addAllAsync(List<T> list, AsyncCallback<List<Long>> callback);
+    void addAllAsync(List<T> list, AsyncCallback<List<Long>> callback);
 
     /**
      * 无则插入，有则更新数据
@@ -80,7 +80,7 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    int deleteAsync(final Query query, final AsyncCallback<Integer> callback);
+    void deleteAsync(final Query query, final AsyncCallback<Integer> callback);
 
     /**
      * 清空数据
@@ -99,7 +99,7 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    int clearAsync(final Query query, final AsyncCallback<Integer> callback);
+    void clearAsync(final Query query, final AsyncCallback<Integer> callback);
 
     /**
      * 更新数据
@@ -120,17 +120,16 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    int updateAsync(final Query query, T t, final AsyncCallback<Integer> callback);
+    void updateAsync(final Query query, T t, final AsyncCallback<Integer> callback);
 
     /**
      * 更新数据
      *
      * @param query
-     * @param t     实体类
      * @param map   数据源
      * @return 受作用行数
      */
-    int update(Query query, T t, HashMap<String, Object> map);
+    int update(Query query, HashMap<String, Object> map);
 
     /**
      * 异步操作
@@ -138,12 +137,11 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * 更新已有的数据
      *
      * @param query
-     * @param t        实体类
      * @param map      数据源
      * @param callback 异步回调
      * @return 受作用行数
      */
-    int updateAsync(final Query query, final T t, final HashMap<String, Object> map, final AsyncCallback<Integer> callback);
+    void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Integer> callback);
 
     /**
      * 查询数据

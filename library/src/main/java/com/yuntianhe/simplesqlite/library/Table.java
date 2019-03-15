@@ -18,7 +18,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     public static final String TAG = Table.class.getSimpleName();
 
-    private IDatabaseOperator mDatabaseOperator;
+    private DevOpenHelper mDatabaseOperator;
 
     public Table(DevOpenHelper helper) {
         mDatabaseOperator = helper;
@@ -43,7 +43,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public List<Long> addAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
+    public void addAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<List<Long>>() {
                 @Override
@@ -59,7 +59,6 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
                         }
                     });
         }
-        return null;
     }
 
     @Override
@@ -97,7 +96,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public int deleteAsync(final Query query, final AsyncCallback<Integer> callback) {
+    public void deleteAsync(final Query query, final AsyncCallback<Integer> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<Integer>() {
                 @Override
@@ -113,7 +112,6 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
                         }
                     });
         }
-        return 0;
     }
 
     @Override
@@ -123,7 +121,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public int clearAsync(final Query query, final AsyncCallback<Integer> callback) {
+    public void clearAsync(final Query query, final AsyncCallback<Integer> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<Integer>() {
                 @Override
@@ -139,7 +137,6 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
                         }
                     });
         }
-        return 0;
     }
 
     @Override
@@ -148,7 +145,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public int updateAsync(final Query query, final T t, final AsyncCallback<Integer> callback) {
+    public void updateAsync(final Query query, final T t, final AsyncCallback<Integer> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<Integer>() {
                 @Override
@@ -164,21 +161,20 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
                         }
                     });
         }
-        return 0;
     }
 
     @Override
-    public int update(Query query, T t, HashMap<String, Object> map) {
-        return mDatabaseOperator.update(query, t, map);
+    public int update(Query query, HashMap<String, Object> map) {
+        return mDatabaseOperator.update(query, getTableEntity(), map);
     }
 
     @Override
-    public int updateAsync(final Query query, final T t, final HashMap<String, Object> map, final AsyncCallback<Integer> callback) {
+    public void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Integer> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<Integer>() {
                 @Override
                 public void subscribe(ObservableEmitter<Integer> e) {
-                    e.onNext(update(query, t, map));
+                    e.onNext(update(query, map));
                 }
             }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -189,7 +185,6 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
                         }
                     });
         }
-        return 0;
     }
 
     @Override
