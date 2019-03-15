@@ -263,7 +263,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     }
 
     @Override
-    public void rawQueryAllAsync(final RawQuery rawQuery, T t, final AsyncCallback<List<T>> callback) {
+    public void rawQueryAllAsync(final RawQuery rawQuery, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<List<T>>() {
                 @Override

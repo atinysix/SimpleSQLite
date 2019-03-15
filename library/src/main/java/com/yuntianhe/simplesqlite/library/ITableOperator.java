@@ -234,7 +234,7 @@ public interface ITableOperator<T extends ITableEntity<T>> {
      * @param callback 异步回调
      * @return 实体类列表
      */
-    void rawQueryAllAsync(RawQuery rawQuery, T t, AsyncCallback<List<T>> callback);
+    void rawQueryAllAsync(RawQuery rawQuery, AsyncCallback<List<T>> callback);
 
 
 }
