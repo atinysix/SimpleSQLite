@@ -47,7 +47,7 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public synchronized <T extends ITableEntity<T>> List<Long> addAll(List<T> list) {
+    public <T extends ITableEntity<T>> List<Long> addAll(List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
         try {
@@ -71,7 +71,7 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public synchronized <T extends ITableEntity<T>> List<Long> replaceAll(List<T> list) {
+    public <T extends ITableEntity<T>> List<Long> replaceAll(List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
         try {
@@ -89,7 +89,7 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public synchronized int delete(Query query) {
+    public int delete(Query query) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
     }

@@ -18,11 +18,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     public static final String TAG = Table.class.getSimpleName();
 
-    private DevOpenHelper mDatabaseOperator;
-
-    public Table(DevOpenHelper helper) {
-        mDatabaseOperator = helper;
-    }
+    protected abstract DevOpenHelper getOpenHelper();
 
     public String getTableName() {
         return getClass().getSimpleName();
@@ -34,12 +30,12 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public long add(T t) {
-        return mDatabaseOperator.add(t);
+        return getOpenHelper().add(t);
     }
 
     @Override
     public List<Long> addAll(List<T> list) {
-        return mDatabaseOperator.addAll(list);
+        return getOpenHelper().addAll(list);
     }
 
     @Override
@@ -63,12 +59,12 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public long replace(T t) {
-        return mDatabaseOperator.replace(t);
+        return getOpenHelper().replace(t);
     }
 
     @Override
     public List<Long> replaceAll(List<T> list) {
-        return mDatabaseOperator.replaceAll(list);
+        return getOpenHelper().replaceAll(list);
     }
 
     @Override
@@ -92,7 +88,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public int delete(Query query) {
-        return mDatabaseOperator.delete(query);
+        return getOpenHelper().delete(query);
     }
 
     @Override
@@ -117,7 +113,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     @Override
     public int clear(Query query) {
         query.clearSelection().equal("1", "1");
-        return mDatabaseOperator.delete(query);
+        return getOpenHelper().delete(query);
     }
 
     @Override
@@ -141,7 +137,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public int update(Query query, T t) {
-        return mDatabaseOperator.update(query, t);
+        return getOpenHelper().update(query, t);
     }
 
     @Override
@@ -165,7 +161,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public int update(Query query, HashMap<String, Object> map) {
-        return mDatabaseOperator.update(query, getTableEntity(), map);
+        return getOpenHelper().update(query, getTableEntity(), map);
     }
 
     @Override
@@ -189,18 +185,18 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public T query(Query query) {
-        return mDatabaseOperator.query(query, getTableEntity());
+        return getOpenHelper().query(query, getTableEntity());
     }
 
     @Override
     public T query(String column, Object value) {
         Query query = Query.from(getTableName()).equal(column, value).log();
-        return mDatabaseOperator.query(query, getTableEntity());
+        return getOpenHelper().query(query, getTableEntity());
     }
 
     @Override
     public List<T> queryAll(Query query) {
-        return mDatabaseOperator.queryAll(query, getTableEntity());
+        return getOpenHelper().queryAll(query, getTableEntity());
     }
 
     @Override
@@ -225,7 +221,7 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
     @Override
     public List<T> queryAll(String column, Object value) {
         Query query = Query.from(getTableName()).equal(column, value).log();
-        return mDatabaseOperator.queryAll(query, getTableEntity());
+        return getOpenHelper().queryAll(query, getTableEntity());
     }
 
     @Override
@@ -249,12 +245,12 @@ public abstract class Table<T extends ITableEntity<T>> implements ITableOperator
 
     @Override
     public T rawQuery(RawQuery rawQuery) {
-        return mDatabaseOperator.rawQuery(rawQuery, getTableEntity());
+        return getOpenHelper().rawQuery(rawQuery, getTableEntity());
     }
 
     @Override
     public List<T> rawQueryAll(RawQuery rawQuery) {
-        return mDatabaseOperator.rawQueryAll(rawQuery, getTableEntity());
+        return getOpenHelper().rawQueryAll(rawQuery, getTableEntity());
     }
 
     @Override

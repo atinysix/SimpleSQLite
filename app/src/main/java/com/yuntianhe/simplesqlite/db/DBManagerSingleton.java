@@ -15,10 +15,10 @@ public class DBManagerSingleton {
 
     private static DBManagerSingleton sGIMDBManager;
 
-    private MyOpenHelper mDatabaseOpenHelper;
+    private MyOpenHelper mOpenHelper;
 
     private DBManagerSingleton() {
-        mDatabaseOpenHelper = new MyOpenHelper(App.getApp(), "test.db", DB_VERSION);
+        mOpenHelper = new MyOpenHelper(App.getApp(), "test.db", DB_VERSION);
     }
 
     public static final DBManagerSingleton getInstance() {
@@ -32,8 +32,8 @@ public class DBManagerSingleton {
         return sGIMDBManager;
     }
 
-    public MyOpenHelper getDatabaseOpenHelper() {
-        return mDatabaseOpenHelper;
+    public MyOpenHelper getOpenHelper() {
+        return mOpenHelper;
     }
 
     public void init() {

@@ -2,6 +2,7 @@ package com.yuntianhe.simplesqlite.table;
 
 import com.yuntianhe.simplesqlite.db.DBManagerSingleton;
 import com.yuntianhe.simplesqlite.entity.TestData;
+import com.yuntianhe.simplesqlite.library.DevOpenHelper;
 import com.yuntianhe.simplesqlite.library.Table;
 
 /**
@@ -16,8 +17,9 @@ public class TestTable extends Table<TestData> {
     public static final String TEXT = "text";
     public static final String DURATION = "duration";
 
-    public TestTable() {
-        super(DBManagerSingleton.getInstance().getDatabaseOpenHelper());
+    @Override
+    protected DevOpenHelper getOpenHelper() {
+        return DBManagerSingleton.getInstance().getOpenHelper();
     }
 
     @Override
