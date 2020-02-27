@@ -153,10 +153,6 @@ public class Query {
         return this;
     }
 
-    public Query leftJoin() {
-        return this;
-    }
-
     public String getTableName() {
         return tableName == null ? "" : tableName;
     }

@@ -11,7 +11,7 @@ public class CursorWrapper {
     public static final byte[] INVALID_BLOB = new byte[0];
     public static final long INVALID_LONG = 0L;
     public static final int INVALID_INTEGER = 0;
-    public static final int INVALID_SHORT = (short) 0;
+    public static final short INVALID_SHORT = (short) 0;
     public static final float INVALID_FLOAT = 0.0f;
     public static final double INVALID_DOUBLE = 0.0d;
     public static final String INVALID_STRING = "";

@@ -13,7 +13,7 @@ public class DBManagerSingleton {
 
     public static final int DB_VERSION = 1;
 
-    private static DBManagerSingleton sGIMDBManager;
+    private static volatile DBManagerSingleton sGIMDBManager;
 
     private MyOpenHelper mOpenHelper;
 
