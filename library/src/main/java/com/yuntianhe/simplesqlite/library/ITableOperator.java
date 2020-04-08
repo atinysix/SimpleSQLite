@@ -7,7 +7,7 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 10:16
  */
-public interface ITableOperator<T extends ITableEntity<T>> {
+public interface ITableOperator<T extends ITableEntity> {
 
     /**
      * 插入一条数据

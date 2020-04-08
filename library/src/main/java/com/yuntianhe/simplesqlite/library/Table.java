@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
  * 描述:
  * 作者: daiwj on 2019/2/22 10:14
  */
-public abstract class Table<T extends ITableEntity<T>> implements ITableOperator<T> {
+public abstract class Table<T extends ITableEntity> implements ITableOperator<T> {
 
     public static final String TAG = Table.class.getSimpleName();
 
