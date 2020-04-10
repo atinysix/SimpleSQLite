@@ -17,11 +17,6 @@ public class BaseTableEntity<T> implements ITableEntity<T> {
     }
 
     @Override
-    public T out(CursorWrapper cursor) {
-        return null;
-    }
-
-    @Override
     public ContentValues in(T entity) {
         return null;
     }
@@ -35,5 +30,10 @@ public class BaseTableEntity<T> implements ITableEntity<T> {
             }
         }
         return cv;
+    }
+
+    @Override
+    public T out(CursorWrapper cursor) {
+        return null;
     }
 }

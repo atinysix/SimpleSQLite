@@ -46,19 +46,19 @@ public class TestData extends BaseTableEntity<TestData> {
     }
 
     @Override
+    public ContentValues in(TestData entity) {
+        ContentValues cv = new ContentValues();
+        cv.put(TestTable.TEXT, entity.getText());
+        cv.put(TestTable.DURATION, entity.getDuration());
+        return cv;
+    }
+
+    @Override
     public TestData out(CursorWrapper cursor) {
         TestData data = new TestData();
         data.setId(cursor.getLong(TestTable._ID));
         data.setText(cursor.getString(TestTable.TEXT));
         data.setDuration(cursor.getInt(TestTable.DURATION));
         return data;
-    }
-
-    @Override
-    public ContentValues in(TestData entity) {
-        ContentValues cv = new ContentValues();
-        cv.put(TestTable.TEXT, entity.getText());
-        cv.put(TestTable.DURATION, entity.getDuration());
-        return cv;
     }
 }
