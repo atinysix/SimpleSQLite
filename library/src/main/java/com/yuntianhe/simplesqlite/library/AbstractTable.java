@@ -1,5 +1,7 @@
 package com.yuntianhe.simplesqlite.library;
 
+import android.support.annotation.CallSuper;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,28 +16,30 @@ import io.reactivex.schedulers.Schedulers;
  * 描述:
  * 作者: daiwj on 2019/2/22 10:14
  */
-public abstract class Table<T extends ITableEntity> implements ITableOperator<T> {
+public abstract class AbstractTable<T extends ITableEntity<T>> implements ITableOperator<T> {
 
-    public static final String TAG = Table.class.getSimpleName();
+    public static final String TAG = AbstractTable.class.getSimpleName();
 
-    protected abstract DevOpenHelper getOpenHelper();
+    public abstract RealOpenHelper getOpenHelper();
+
+    public abstract String getDatabaseName();
 
     public String getTableName() {
         return getClass().getSimpleName();
     }
 
-    protected abstract String[] onCreateColumns();
+    public abstract String onCreateInitSql();
 
-    protected abstract T getTableEntity();
+    protected abstract T onCreateTableEntity();
 
     @Override
     public long add(T t) {
-        return getOpenHelper().add(t);
+        return getOpenHelper().add(getTableName(), t);
     }
 
     @Override
     public List<Long> addAll(List<T> list) {
-        return getOpenHelper().addAll(list);
+        return getOpenHelper().addAll(getTableName(), list);
     }
 
     @Override
@@ -59,12 +63,12 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
 
     @Override
     public long replace(T t) {
-        return getOpenHelper().replace(t);
+        return getOpenHelper().replace(getTableName(), t);
     }
 
     @Override
     public List<Long> replaceAll(List<T> list) {
-        return getOpenHelper().replaceAll(list);
+        return getOpenHelper().replaceAll(getTableName(), list);
     }
 
     @Override
@@ -141,6 +145,11 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
     }
 
     @Override
+    public List<Long> updateAll(Query query, List<T> list) {
+        return getOpenHelper().updateAll(query, list);
+    }
+
+    @Override
     public void updateAsync(final Query query, final T t, final AsyncCallback<Integer> callback) {
         if (callback != null) {
             Observable.create(new ObservableOnSubscribe<Integer>() {
@@ -161,7 +170,7 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
 
     @Override
     public int update(Query query, HashMap<String, Object> map) {
-        return getOpenHelper().update(query, getTableEntity(), map);
+        return getOpenHelper().update(query, onCreateTableEntity(), map);
     }
 
     @Override
@@ -185,18 +194,18 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
 
     @Override
     public T query(Query query) {
-        return getOpenHelper().query(query, getTableEntity());
+        return getOpenHelper().query(query, onCreateTableEntity());
     }
 
     @Override
     public T query(String column, Object value) {
-        Query query = Query.from(getTableName()).equal(column, value).log();
-        return getOpenHelper().query(query, getTableEntity());
+        Query query = Query.from(getTableName()).equal(column, value).build();
+        return getOpenHelper().query(query, onCreateTableEntity());
     }
 
     @Override
     public List<T> queryAll(Query query) {
-        return getOpenHelper().queryAll(query, getTableEntity());
+        return getOpenHelper().queryAll(query, onCreateTableEntity());
     }
 
     @Override
@@ -220,8 +229,8 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
 
     @Override
     public List<T> queryAll(String column, Object value) {
-        Query query = Query.from(getTableName()).equal(column, value).log();
-        return getOpenHelper().queryAll(query, getTableEntity());
+        Query query = Query.from(getTableName()).equal(column, value).build();
+        return getOpenHelper().queryAll(query, onCreateTableEntity());
     }
 
     @Override
@@ -245,12 +254,12 @@ public abstract class Table<T extends ITableEntity> implements ITableOperator<T>
 
     @Override
     public T rawQuery(RawQuery rawQuery) {
-        return getOpenHelper().rawQuery(rawQuery, getTableEntity());
+        return getOpenHelper().rawQuery(rawQuery, onCreateTableEntity());
     }
 
     @Override
     public List<T> rawQueryAll(RawQuery rawQuery) {
-        return getOpenHelper().rawQueryAll(rawQuery, getTableEntity());
+        return getOpenHelper().rawQueryAll(rawQuery, onCreateTableEntity());
     }
 
     @Override

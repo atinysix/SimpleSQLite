@@ -40,12 +40,10 @@ public class Query {
         return new Query(tableName);
     }
 
-    /**
-     * 注意：查询指定列的数据，在解析Cursor时，需要手动判断Cursor是否包含此列
-     *
-     * @param columns
-     * @return
-     */
+    public String getTableName() {
+        return tableName == null ? "" : tableName;
+    }
+
     public Query column(String... columns) {
         this.columns = columns;
         return this;
@@ -153,10 +151,6 @@ public class Query {
         return this;
     }
 
-    public String getTableName() {
-        return tableName == null ? "" : tableName;
-    }
-
     public String[] getColumns() {
         return columns;
     }
@@ -166,7 +160,7 @@ public class Query {
     }
 
     public String[] getSelectionArgs() {
-        final int size = selectionArgsBuilder.size();
+        int size = selectionArgsBuilder.size();
         String[] args = new String[size];
         for (int i = 0; i < size; i++) {
             args[i] = selectionArgsBuilder.get(i).toString();
@@ -216,7 +210,7 @@ public class Query {
         return this;
     }
 
-    public Query page(int pageCount, int page) {
+    public Query page(int page, int pageCount) {
         StringBuilder sb = new StringBuilder();
         sb.append(pageCount * (page - 1)).append(", ").append(pageCount);
         this.limit = sb.toString();
@@ -229,7 +223,7 @@ public class Query {
         return this;
     }
 
-    public Query log() {
+    public Query build() {
         Log.w(TAG, toString());
         return this;
     }

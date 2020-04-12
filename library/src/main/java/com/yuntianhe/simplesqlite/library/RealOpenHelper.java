@@ -13,40 +13,40 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 11:43
  */
-public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabaseOperator {
+public class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
 
-    public DevOpenHelper(Context context, String name, int version) {
+    private IDatabaseFactory mFactory;
+
+    public RealOpenHelper(Context context, String name, int version, IDatabaseFactory factory) {
         super(context, name, null, version);
+        mFactory = factory;
+        factory.onInit(context);
     }
 
     @Override
     public final void onCreate(SQLiteDatabase db) {
-        onCreate(new Database(db));
+        mFactory.onCreate(new DatabaseWrapper(db));
     }
 
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(new Database(db), oldVersion, newVersion);
+        mFactory.onUpgrade(new DatabaseWrapper(db), oldVersion, newVersion);
     }
 
-    public abstract void onCreate(Database db);
-
-    public abstract void onUpgrade(Database db, int oldVersion, int newVersion);
-
     @Override
-    public <T extends ITableEntity<T>> long add(T t) {
+    public <T extends ITableEntity<T>> long add(String table, T t) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.insert(t.getTableName(), null, t.in(t));
+        return db.insert(table, null, t.in(t));
     }
 
     @Override
-    public <T extends ITableEntity<T>> List<Long> addAll(List<T> list) {
+    public <T extends ITableEntity<T>> List<Long> addAll(String table, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
         try {
             db.beginTransaction();
             for (T t : list) {
-                long rowId = db.insert(t.getTableName(), null, t.in(t));
+                long rowId = db.insert(table, null, t.in(t));
                 idList.add(rowId);
             }
             db.setTransactionSuccessful();
@@ -58,19 +58,19 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     }
 
     @Override
-    public <T extends ITableEntity<T>> long replace(T t) {
+    public <T extends ITableEntity<T>> long replace(String table, T t) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.replace(t.getTableName(), null, t.in(t));
+        return db.replace(table, null, t.in(t));
     }
 
     @Override
-    public <T extends ITableEntity<T>> List<Long> replaceAll(List<T> list) {
+    public <T extends ITableEntity<T>> List<Long> replaceAll(String table, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
         try {
             db.beginTransaction();
             for (T t : list) {
-                long rowId = db.replace(t.getTableName(), null, t.in(t));
+                long rowId = db.replace(table, null, t.in(t));
                 idList.add(rowId);
             }
             db.setTransactionSuccessful();
@@ -90,13 +90,31 @@ public abstract class DevOpenHelper extends SQLiteOpenHelper implements IDatabas
     @Override
     public <T extends ITableEntity<T>> int update(Query query, T t) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.update(t.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+        return db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
     }
 
     @Override
     public <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.update(t.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
+        return db.update(query.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
+    }
+
+    @Override
+    public <T extends ITableEntity<T>> List<Long> updateAll(Query query, List<T> list) {
+        SQLiteDatabase db = getWritableDatabase();
+        List<Long> idList = new ArrayList<>();
+        try {
+            db.beginTransaction();
+            for (T t : list) {
+                long rowId = db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+                idList.add(rowId);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            db.endTransaction();
+        }
+        return idList;
     }
 
     @Override

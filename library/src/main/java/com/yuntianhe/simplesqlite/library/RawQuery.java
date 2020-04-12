@@ -5,6 +5,7 @@ package com.yuntianhe.simplesqlite.library;
  * 作者: daiwj on 2019/2/22 15:11
  */
 public class RawQuery {
+
     private String sql;
 
     private RawQuery(String sql) {

@@ -7,7 +7,7 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 10:16
  */
-public interface ITableOperator<T extends ITableEntity> {
+public interface ITableOperator<T> {
 
     /**
      * 插入一条数据
@@ -109,6 +109,15 @@ public interface ITableOperator<T extends ITableEntity> {
      * @return 受作用行数
      */
     int update(Query query, T t);
+
+    /**
+     * 更新数据
+     *
+     * @param query
+     * @param list   数据源
+     * @return 受作用行数
+     */
+    List<Long> updateAll(Query query, List<T> list);
 
     /**
      * 异步操作
