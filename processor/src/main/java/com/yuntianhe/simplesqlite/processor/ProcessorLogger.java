@@ -21,15 +21,10 @@ public class ProcessorLogger {
     }
 
     public void w(String tag, String message) {
-        logger.printMessage(Diagnostic.Kind.ERROR, tag + " " + message);
+        logger.printMessage(Diagnostic.Kind.ERROR, tag + "⚠️：" + message);
     }
 
     public void e(String message) {
-        e(getClass().getSimpleName(), message);
+        throw new IllegalArgumentException("⚠️：" + message);
     }
-
-    public void e(String tag, String message) {
-        logger.printMessage(Diagnostic.Kind.ERROR, tag + " " + message);
-    }
-
 }

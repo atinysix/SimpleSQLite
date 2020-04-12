@@ -53,7 +53,7 @@ public interface IOpenHelper {
      * @param query
      * @return 受作用行数
      */
-    int delete(Query query);
+    long delete(Query query);
 
     /**
      * 更新已有的数据
@@ -63,7 +63,7 @@ public interface IOpenHelper {
      * @param <T>
      * @return 受作用行数
      */
-    <T extends ITableEntity<T>> int update(Query query, T t);
+    <T extends ITableEntity<T>> long update(Query query, T t);
 
     /**
      * 更新已有的数据
@@ -74,7 +74,7 @@ public interface IOpenHelper {
      * @param <T>
      * @return 受作用行数
      */
-    <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map);
+    <T extends ITableEntity<T>> long update(Query query, T t, HashMap<String, Object> map);
 
     /**
      * 更新已有的数据
@@ -84,7 +84,7 @@ public interface IOpenHelper {
      * @param <T>
      * @return 受作用行数
      */
-    <T extends ITableEntity<T>> List<Long> updateAll(Query query, List<T> mapList);
+    <T extends ITableEntity<T>> long updateAll(Query query, List<T> mapList);
 
     /**
      * 查询数据

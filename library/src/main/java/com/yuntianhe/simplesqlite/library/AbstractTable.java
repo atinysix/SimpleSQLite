@@ -1,16 +1,9 @@
 package com.yuntianhe.simplesqlite.library;
 
-import android.support.annotation.CallSuper;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 描述:
@@ -18,9 +11,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public abstract class AbstractTable<T extends ITableEntity<T>> implements ITableOperator<T> {
 
-    public static final String TAG = AbstractTable.class.getSimpleName();
-
-    public abstract RealOpenHelper getOpenHelper();
+    protected abstract RealOpenHelper getOpenHelper();
 
     public abstract String getDatabaseName();
 
@@ -45,19 +36,13 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void addAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<List<Long>>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<Long>>() {
                 @Override
-                public void subscribe(ObservableEmitter<List<Long>> e) {
-                    e.onNext(addAll(list));
+                public void run() {
+                    List<Long> idList = addAll(list);
+                    post(callback, idList);
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<Long>>() {
-                        @Override
-                        public void accept(List<Long> longs) {
-                            callback.onResult(longs);
-                        }
-                    });
+            });
         }
     }
 
@@ -74,121 +59,99 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void replaceAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<List<Long>>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<Long>>() {
                 @Override
-                public void subscribe(ObservableEmitter<List<Long>> e) {
-                    e.onNext(replaceAll(list));
+                public void run() {
+                    List<Long> idList = replaceAll(list);
+                    post(callback, idList);
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<Long>>() {
-                        @Override
-                        public void accept(List<Long> longs) {
-                            callback.onResult(longs);
-                        }
-                    });
+            });
         }
     }
 
     @Override
-    public int delete(Query query) {
+    public long delete(Query query) {
         return getOpenHelper().delete(query);
     }
 
     @Override
-    public void deleteAsync(final Query query, final AsyncCallback<Integer> callback) {
+    public void deleteAsync(final Query query, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<Integer>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
                 @Override
-                public void subscribe(ObservableEmitter<Integer> e) {
-                    e.onNext(delete(query));
+                public void run() {
+                    post(callback, delete(query));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Integer>() {
-                        @Override
-                        public void accept(Integer integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
     @Override
-    public int clear(Query query) {
+    public long clear(Query query) {
         query.clearSelection().equal("1", "1");
         return getOpenHelper().delete(query);
     }
 
     @Override
-    public void clearAsync(final Query query, final AsyncCallback<Integer> callback) {
+    public void clearAsync(final Query query, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<Integer>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
                 @Override
-                public void subscribe(ObservableEmitter<Integer> e) {
-                    e.onNext(clear(query));
+                public void run() {
+                    post(callback, clear(query));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Integer>() {
-                        @Override
-                        public void accept(Integer integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
     @Override
-    public int update(Query query, T t) {
+    public long update(Query query, T t) {
         return getOpenHelper().update(query, t);
     }
 
     @Override
-    public List<Long> updateAll(Query query, List<T> list) {
-        return getOpenHelper().updateAll(query, list);
-    }
-
-    @Override
-    public void updateAsync(final Query query, final T t, final AsyncCallback<Integer> callback) {
+    public void updateAsync(final Query query, final T t, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<Integer>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
                 @Override
-                public void subscribe(ObservableEmitter<Integer> e) {
-                    e.onNext(update(query, t));
+                public void run() {
+                    post(callback, update(query, t));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Integer>() {
-                        @Override
-                        public void accept(Integer integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
     @Override
-    public int update(Query query, HashMap<String, Object> map) {
+    public long updateAll(Query query, List<T> list) {
+        return getOpenHelper().updateAll(query, list);
+    }
+
+    @Override
+    public void updateAllAsync(final Query query, final List<T> list, final AsyncCallback<Long> callback) {
+        if (callback != null) {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+                @Override
+                public void run() {
+                    post(callback, updateAll(query, list));
+                }
+            });
+        }
+    }
+
+    @Override
+    public long update(Query query, HashMap<String, Object> map) {
         return getOpenHelper().update(query, onCreateTableEntity(), map);
     }
 
     @Override
-    public void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Integer> callback) {
+    public void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<Integer>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
                 @Override
-                public void subscribe(ObservableEmitter<Integer> e) {
-                    e.onNext(update(query, map));
+                public void run() {
+                    post(callback, update(query, map));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Integer>() {
-                        @Override
-                        public void accept(Integer integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
@@ -211,19 +174,12 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void queryAllAsync(final Query query, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<List<T>>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
                 @Override
-                public void subscribe(ObservableEmitter<List<T>> e) {
-                    e.onNext(queryAll(query));
+                public void run() {
+                    post(callback, queryAll(query));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<T>>() {
-                        @Override
-                        public void accept(List<T> integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
@@ -236,19 +192,12 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void queryAllAsync(final String column, final Object value, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<List<T>>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
                 @Override
-                public void subscribe(ObservableEmitter<List<T>> e) {
-                    e.onNext(queryAll(column, value));
+                public void run() {
+                    post(callback, queryAll(column, value));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<T>>() {
-                        @Override
-                        public void accept(List<T> integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 
@@ -265,19 +214,12 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void rawQueryAllAsync(final RawQuery rawQuery, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            Observable.create(new ObservableOnSubscribe<List<T>>() {
+            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
                 @Override
-                public void subscribe(ObservableEmitter<List<T>> e) {
-                    e.onNext(rawQueryAll(rawQuery));
+                public void run() {
+                    post(callback, rawQueryAll(rawQuery));
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<T>>() {
-                        @Override
-                        public void accept(List<T> integer) {
-                            callback.onResult(integer);
-                        }
-                    });
+            });
         }
     }
 }

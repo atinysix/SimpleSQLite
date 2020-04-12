@@ -29,6 +29,8 @@ import javax.lang.model.element.TypeElement;
 public class OpenHelperProcessor extends AbstractProcessor {
 
     public static final String PACKAGE_NAME = "com.yuntianhe.simplesqlite.processor";
+    public static final String RESULT_CLASS_NAME = "SimpleSQLite";
+
     public static final ClassName openHelperInterface = ClassName.get("com.yuntianhe.simplesqlite.library", "IOpenHelper");
     public static final ClassName realOpenHelperClass = ClassName.get("com.yuntianhe.simplesqlite.library", "RealOpenHelper");
 
@@ -37,7 +39,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
     public static final ClassName hashMapClass = ClassName.get("java.util", "HashMap");
     public static final ClassName mapClass = ClassName.get("java.util", "Map");
 
-    public static final ClassName resultClass = ClassName.get(PACKAGE_NAME, "SimpleSQLite");
+    public static final ClassName resultClass = ClassName.get(PACKAGE_NAME, RESULT_CLASS_NAME);
 
     private Filer mFiler;
     private ProcessorLogger mLogger;
@@ -68,10 +70,13 @@ public class OpenHelperProcessor extends AbstractProcessor {
 
     private void createFile(List<Element> databaseList) {
         if (ProcessorUtil.isEmpty(databaseList)) {
-            mLogger.w("未发现 @Database 注释的类！");
             return;
         }
 
+        FieldSpec tagField = FieldSpec.builder(String.class, "TAG")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                .initializer("$L.class.getSimpleName()", RESULT_CLASS_NAME)
+                .build();
 
         TypeName resultField = ParameterizedTypeName.get(hashMapClass, stringClass, realOpenHelperClass);
         FieldSpec containerField = FieldSpec.builder(resultField, "sContainer")
@@ -91,7 +96,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
                 .returns(realOpenHelperClass)
                 .build();
 
-        // method: in
+        // method: init
         MethodSpec.Builder init = MethodSpec.methodBuilder("init")
                 .addParameter(ParameterSpec.builder(contextClass, "context").build())
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
@@ -104,6 +109,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
         }
 
         TypeSpec resultType = TypeSpec.classBuilder(resultClass) // 创建类
+                .addField(tagField)
                 .addField(containerField)
                 .addMethod(getOpenHelper)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -123,7 +129,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
         }
     }
 
-    public static String getDatabaseName(Element target) {
+    private String getDatabaseName(Element target) {
         String databaseName = null;
         if (ProcessorUtil.hasAnnotation(target, Database.class)) {
             databaseName = target.getAnnotation(Database.class).name();
@@ -134,10 +140,13 @@ public class OpenHelperProcessor extends AbstractProcessor {
         return databaseName;
     }
 
-    public static int getDatabaseVersion(Element target) {
+    private int getDatabaseVersion(Element target) {
         int version = 1;
         if (ProcessorUtil.hasAnnotation(target, Database.class)) {
             version = target.getAnnotation(Database.class).version();
+        }
+        if (version < 1) {
+            mLogger.e(ProcessorUtil.getClassName(target) +"中注解@Database的字段 version 值不能小于1！");
         }
         return version;
     }

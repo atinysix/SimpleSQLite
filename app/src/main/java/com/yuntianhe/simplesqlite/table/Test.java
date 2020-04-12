@@ -9,43 +9,43 @@ import com.yuntianhe.simplesqlite.library.CursorWrapper;
 import com.yuntianhe.simplesqlite.processor.TestTable;
 
 /**
- * 描述: 客服消息表
+ * 描述:
  * 作者: daiwj on 2019/2/20 14:39
  */
 @Table(tableName = "test_table", databaseName = "test_database")
 public class Test extends BaseTableEntity<Test> {
 
-    @Column(name = "price", defaultValue = "1.0")
-    public float price;
+    @Column(name = "id")
+    public long id;
 
-    @Column(name = "count")
-    public int count;
+    @Column(name = "text")
+    public String text;
 
-    @Column(name = "count_limit")
-    public int limit;
+    @Column(name = "duration_new")
+    public int duration;
 
-    public float getPrice() {
-        return price;
+    public long getId() {
+        return id;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public int getCount() {
-        return count;
+    public String getText() {
+        return text == null ? "" : text;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public int getLimit() {
-        return limit;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override
@@ -61,9 +61,9 @@ public class Test extends BaseTableEntity<Test> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("price: " + price);
-        sb.append(", count: " + count);
-        sb.append(", limit: " + limit);
+        sb.append("id: " + id);
+        sb.append(", text: " + text);
+        sb.append(", duration: " + duration);
         return sb.toString();
     }
 }

@@ -92,7 +92,7 @@ public class TableCreatorProcessor extends AbstractProcessor {
 
         // 方法: getOpenHelper
         MethodSpec getOpenHelper = MethodSpec.methodBuilder("getOpenHelper")
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PROTECTED)
                 .addAnnotation(Override.class)
                 .addStatement("return SimpleSQLite.getOpenHelper(getDatabaseName())")
                 .returns(realOpenHelperClass)
@@ -227,29 +227,26 @@ public class TableCreatorProcessor extends AbstractProcessor {
         }
     }
 
-    public static String getDatabaseName(Element target) {
+    private String getDatabaseName(Element target) {
         String databaseName = null;
         if (ProcessorUtil.hasAnnotation(target, Table.class)) {
             databaseName = target.getAnnotation(Table.class).databaseName();
         }
         if (ProcessorUtil.isEmpty(databaseName)) {
-            throw new IllegalArgumentException(ProcessorUtil.getClassName(target) + "的@Table注解中的 databaseName 不能为空！");
+            sLogger.e(ProcessorUtil.getClassName(target) + "中@Table注解的 databaseName 不能为空！");
         }
         return databaseName;
     }
 
-    public static String getTableName(Element target) {
-        String tableName = null;
-        if (ProcessorUtil.hasAnnotation(target, Table.class)) {
-            tableName = target.getAnnotation(Table.class).tableName();
-        }
+    private String getTableName(Element target) {
+        String tableName = target.getAnnotation(Table.class).tableName();
         if (ProcessorUtil.isEmpty(tableName)) {
             tableName = target.getSimpleName().toString();
         }
         return tableName;
     }
 
-    public static String getColumnName(Element field) {
+    private String getColumnName(Element field) {
         String columnName = field.getAnnotation(Column.class).name();
         if (ProcessorUtil.isEmpty(columnName)) {
             columnName = ProcessorUtil.getElementName(field);
@@ -257,16 +254,16 @@ public class TableCreatorProcessor extends AbstractProcessor {
         return columnName;
     }
 
-    public static String getColumnType(Element field) {
+    private String getColumnType(Element field) {
         return ColumnType.get(ProcessorUtil.getElementType(field));
     }
 
-    public static String getColumnDefaultValue(Element field) {
+    private  String getColumnDefaultValue(Element field) {
         String defaultValue = field.getAnnotation(Column.class).defaultValue();
         return defaultValue;
     }
 
-    private List<FieldSpec> createFieldSpec(List<Element> fieldList) {
+    private  List<FieldSpec> createFieldSpec(List<Element> fieldList) {
         List<FieldSpec> list = new ArrayList<>(fieldList.size());
         for (Element field : fieldList) {
             String fieldName = ProcessorUtil.getElementName(field);

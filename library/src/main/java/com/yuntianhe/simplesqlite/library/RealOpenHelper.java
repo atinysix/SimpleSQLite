@@ -15,22 +15,31 @@ import java.util.List;
  */
 public class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
 
-    private IDatabaseFactory mFactory;
+    private IDatabaseEntry mFactory;
 
-    public RealOpenHelper(Context context, String name, int version, IDatabaseFactory factory) {
+    public RealOpenHelper(Context context, String name, int version, IDatabaseEntry factory) {
         super(context, name, null, version);
         mFactory = factory;
-        factory.onInit(context);
+        if (factory != null) {
+            Logger.d(factory.getClass().getSimpleName() + " init success(name: " + name + ", version: " + version + ")");
+            factory.onInit(context, name, version);
+        }
     }
 
     @Override
     public final void onCreate(SQLiteDatabase db) {
-        mFactory.onCreate(new DatabaseWrapper(db));
+        if (mFactory != null) {
+            mFactory.onCreate(new DatabaseDelegate(db));
+            Logger.d(mFactory.getClass().getSimpleName() + " create success");
+        }
     }
 
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        mFactory.onUpgrade(new DatabaseWrapper(db), oldVersion, newVersion);
+        if (mFactory != null) {
+            mFactory.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
+            Logger.d(mFactory.getClass().getSimpleName() + " upgrade success");
+        }
     }
 
     @Override
@@ -82,39 +91,38 @@ public class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
     }
 
     @Override
-    public int delete(Query query) {
+    public long delete(Query query) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
     }
 
     @Override
-    public <T extends ITableEntity<T>> int update(Query query, T t) {
+    public <T extends ITableEntity<T>> long update(Query query, T t) {
         SQLiteDatabase db = getWritableDatabase();
         return db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
     }
 
     @Override
-    public <T extends ITableEntity<T>> int update(Query query, T t, HashMap<String, Object> map) {
+    public <T extends ITableEntity<T>> long update(Query query, T t, HashMap<String, Object> map) {
         SQLiteDatabase db = getWritableDatabase();
         return db.update(query.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
     }
 
     @Override
-    public <T extends ITableEntity<T>> List<Long> updateAll(Query query, List<T> list) {
+    public <T extends ITableEntity<T>> long updateAll(Query query, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
-        List<Long> idList = new ArrayList<>();
+        long rows = 0;
         try {
             db.beginTransaction();
             for (T t : list) {
-                long rowId = db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
-                idList.add(rowId);
+                rows += db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
             db.endTransaction();
         }
-        return idList;
+        return rows;
     }
 
     @Override
