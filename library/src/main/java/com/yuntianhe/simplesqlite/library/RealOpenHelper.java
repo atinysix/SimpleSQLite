@@ -38,7 +38,7 @@ public class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (mFactory != null) {
             mFactory.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
-            Logger.d(mFactory.getClass().getSimpleName() + " upgrade success");
+            Logger.d(mFactory.getClass().getSimpleName() + " upgrade success(oldVersion: " + oldVersion + ", newVersion: " + newVersion + ")");
         }
     }
 
