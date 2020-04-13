@@ -1,7 +1,5 @@
 package com.yuntianhe.simplesqlite.library;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void addAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<Long>>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<List<Long>>() {
                 @Override
                 public void run() {
                     List<Long> idList = addAll(list);
@@ -59,7 +57,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void replaceAllAsync(final List<T> list, final AsyncCallback<List<Long>> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<Long>>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<List<Long>>() {
                 @Override
                 public void run() {
                     List<Long> idList = replaceAll(list);
@@ -77,7 +75,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void deleteAsync(final Query query, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<Long>() {
                 @Override
                 public void run() {
                     post(callback, delete(query));
@@ -95,7 +93,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void clearAsync(final Query query, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<Long>() {
                 @Override
                 public void run() {
                     post(callback, clear(query));
@@ -112,7 +110,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void updateAsync(final Query query, final T t, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<Long>() {
                 @Override
                 public void run() {
                     post(callback, update(query, t));
@@ -129,7 +127,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void updateAllAsync(final Query query, final List<T> list, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<Long>() {
                 @Override
                 public void run() {
                     post(callback, updateAll(query, list));
@@ -146,7 +144,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Long> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<Long>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<Long>() {
                 @Override
                 public void run() {
                     post(callback, update(query, map));
@@ -174,7 +172,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void queryAllAsync(final Query query, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<List<T>>() {
                 @Override
                 public void run() {
                     post(callback, queryAll(query));
@@ -192,7 +190,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void queryAllAsync(final String column, final Object value, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<List<T>>() {
                 @Override
                 public void run() {
                     post(callback, queryAll(column, value));
@@ -214,7 +212,7 @@ public abstract class AbstractTable<T extends ITableEntity<T>> implements ITable
     @Override
     public void rawQueryAllAsync(final RawQuery rawQuery, final AsyncCallback<List<T>> callback) {
         if (callback != null) {
-            AsyncExecutor.runBackground(new AsyncExecutor.Task<List<T>>() {
+            AsyncExecutor.execute(new AsyncExecutor.Task<List<T>>() {
                 @Override
                 public void run() {
                     post(callback, rawQueryAll(rawQuery));

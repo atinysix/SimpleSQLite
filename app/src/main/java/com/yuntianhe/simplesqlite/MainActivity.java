@@ -58,7 +58,8 @@ public class MainActivity extends Activity {
                 tvTest.setText(test.toString());
 
                 DemoTable demoTable = new DemoTable();
-                demoTable.queryAllAsync(Query.from(demoTable.getTableName()), new AsyncCallback<List<Demo>>() {
+                Query q = Query.from(demoTable.getTableName()).gt(DemoTable.limit, 50);
+                demoTable.queryAllAsync(q, new AsyncCallback<List<Demo>>() {
 
                     @Override
                     public void onResult(List<Demo> result) {

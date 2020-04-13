@@ -10,7 +10,7 @@ public class AsyncExecutor {
 
     private static Handler mHandler = new Handler();
 
-    public static final void runBackground(Runnable async) {
+    public static final void execute(Runnable async) {
         new InnerThread(async).start();
     }
 
