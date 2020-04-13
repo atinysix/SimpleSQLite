@@ -130,10 +130,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
     }
 
     private String getDatabaseName(Element target) {
-        String databaseName = null;
-        if (ProcessorUtil.hasAnnotation(target, Database.class)) {
-            databaseName = target.getAnnotation(Database.class).name();
-        }
+        String databaseName = target.getAnnotation(Database.class).name();
         if (ProcessorUtil.isEmpty(databaseName)) {
             databaseName = ProcessorUtil.getClassName(target);
         }
@@ -141,10 +138,7 @@ public class OpenHelperProcessor extends AbstractProcessor {
     }
 
     private int getDatabaseVersion(Element target) {
-        int version = 1;
-        if (ProcessorUtil.hasAnnotation(target, Database.class)) {
-            version = target.getAnnotation(Database.class).version();
-        }
+        int version = target.getAnnotation(Database.class).version();
         if (version < 1) {
             mLogger.e(ProcessorUtil.getClassName(target) +"中注解@Database的字段 version 值不能小于1！");
         }

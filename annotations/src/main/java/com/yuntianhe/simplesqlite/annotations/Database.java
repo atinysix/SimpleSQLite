@@ -15,6 +15,6 @@ public @interface Database {
 
     String name() default "";
 
-    int version() default 1;
+    int version();
 
 }
