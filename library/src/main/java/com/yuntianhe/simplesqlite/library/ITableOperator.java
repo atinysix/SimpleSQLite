@@ -37,7 +37,7 @@ public interface ITableOperator<T> {
     void addAllAsync(List<T> list, AsyncCallback<List<Long>> callback);
 
     /**
-     * 无则插入，有则更新数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param t 数据源
      * @return 受作用行id
@@ -45,7 +45,7 @@ public interface ITableOperator<T> {
     long replace(T t);
 
     /**
-     * 无则插入，有则更新数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param t 数据源
      * @return 受作用行id列表
@@ -55,7 +55,7 @@ public interface ITableOperator<T> {
     /**
      * 异步操作
      * <p>
-     * 无则插入，有则更新多条数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param list     数据源
      * @param callback 异步回调
