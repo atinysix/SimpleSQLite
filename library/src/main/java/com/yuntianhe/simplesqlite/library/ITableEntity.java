@@ -11,8 +11,6 @@ import java.util.HashMap;
  */
 public interface ITableEntity<T> {
 
-    String getTableName();
-
     ContentValues in(T entity);
 
     ContentValues in(HashMap<String, Object> map);

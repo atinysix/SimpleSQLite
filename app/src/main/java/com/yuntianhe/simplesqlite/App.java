@@ -2,7 +2,7 @@ package com.yuntianhe.simplesqlite;
 
 import android.app.Application;
 
-import com.yuntianhe.simplesqlite.db.DBManagerSingleton;
+import com.yuntianhe.simplesqlite.processor.SimpleSQLite;
 
 /**
  * 描述:
@@ -17,7 +17,7 @@ public class App extends Application {
         super.onCreate();
         mApp = this;
 
-        DBManagerSingleton.getInstance().init();
+        SimpleSQLite.init(this);
     }
 
     public static App getApp() {

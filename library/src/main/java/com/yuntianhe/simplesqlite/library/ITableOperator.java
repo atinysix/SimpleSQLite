@@ -7,7 +7,7 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 10:16
  */
-public interface ITableOperator<T extends ITableEntity> {
+public interface ITableOperator<T> {
 
     /**
      * 插入一条数据
@@ -37,7 +37,7 @@ public interface ITableOperator<T extends ITableEntity> {
     void addAllAsync(List<T> list, AsyncCallback<List<Long>> callback);
 
     /**
-     * 无则插入，有则更新数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param t 数据源
      * @return 受作用行id
@@ -45,7 +45,7 @@ public interface ITableOperator<T extends ITableEntity> {
     long replace(T t);
 
     /**
-     * 无则插入，有则更新数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param t 数据源
      * @return 受作用行id列表
@@ -55,7 +55,7 @@ public interface ITableOperator<T extends ITableEntity> {
     /**
      * 异步操作
      * <p>
-     * 无则插入，有则更新多条数据
+     * 无则插入，有则更新数据，原数据需要至少有一个 unique 索引
      *
      * @param list     数据源
      * @param callback 异步回调
@@ -69,7 +69,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param query
      * @return 受作用行数
      */
-    int delete(Query query);
+    long delete(Query query);
 
     /**
      * 异步操作
@@ -80,7 +80,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    void deleteAsync(final Query query, final AsyncCallback<Integer> callback);
+    void deleteAsync(final Query query, final AsyncCallback<Long> callback);
 
     /**
      * 清空数据
@@ -88,7 +88,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param query
      * @return 受作用行数
      */
-    int clear(final Query query);
+    long clear(final Query query);
 
     /**
      * 异步操作
@@ -99,7 +99,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    void clearAsync(final Query query, final AsyncCallback<Integer> callback);
+    void clearAsync(final Query query, final AsyncCallback<Long> callback);
 
     /**
      * 更新数据
@@ -108,7 +108,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param t     实体类数据源
      * @return 受作用行数
      */
-    int update(Query query, T t);
+    long update(Query query, T t);
 
     /**
      * 异步操作
@@ -120,7 +120,18 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    void updateAsync(final Query query, T t, final AsyncCallback<Integer> callback);
+    void updateAsync(final Query query, T t, final AsyncCallback<Long> callback);
+
+    /**
+     * 更新数据
+     *
+     * @param query
+     * @param list   数据源
+     * @return 受作用行数
+     */
+    long updateAll(Query query, List<T> list);
+
+    void updateAllAsync(Query query, List<T> list, AsyncCallback<Long> callback);
 
     /**
      * 更新数据
@@ -129,7 +140,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param map   数据源
      * @return 受作用行数
      */
-    int update(Query query, HashMap<String, Object> map);
+    long update(Query query, HashMap<String, Object> map);
 
     /**
      * 异步操作
@@ -141,7 +152,7 @@ public interface ITableOperator<T extends ITableEntity> {
      * @param callback 异步回调
      * @return 受作用行数
      */
-    void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Integer> callback);
+    void updateAsync(final Query query, final HashMap<String, Object> map, final AsyncCallback<Long> callback);
 
     /**
      * 查询数据

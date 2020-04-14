@@ -12,11 +12,6 @@ import java.util.Map;
 public class BaseTableEntity<T> implements ITableEntity<T> {
 
     @Override
-    public String getTableName() {
-        return null;
-    }
-
-    @Override
     public ContentValues in(T entity) {
         return null;
     }
