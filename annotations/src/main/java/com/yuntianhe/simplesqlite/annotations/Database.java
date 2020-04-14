@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * author: daiwj on 2020-04-08 21:24
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Database {
 
     String name() default "";

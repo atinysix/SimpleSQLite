@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * author: daiwj on 2020-04-08 17:32
  */
 @Target(ElementType.FIELD)
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Column {
 
     String name() default "";

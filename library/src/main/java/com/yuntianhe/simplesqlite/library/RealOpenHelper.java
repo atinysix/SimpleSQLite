@@ -13,7 +13,7 @@ import java.util.List;
  * 描述:
  * 作者: daiwj on 2019/2/22 11:43
  */
-public class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
+public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
 
     private IDatabaseEntry mFactory;
 
