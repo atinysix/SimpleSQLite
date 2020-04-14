@@ -6,10 +6,10 @@ package com.yuntianhe.simplesqlite.processor;
  */
 public enum ColumnType {
 
-    BYTE("byte", "byte", "Byte"),
-    SHORT("short", "short", "Short"),
-    INTEGER("integer", "int", "Integer"),
-    LONG("long", "long", "Long"),
+    BYTE("integer", "byte", "Byte"),
+    SHORT("integer", "short", "Short"),
+    INT("integer", "int", "Integer"),
+    LONG("integer", "long", "Long"),
     FLOAT("float", "float", "Float"),
     DOUBLE("double", "double", "Double"),
     TEXT("text", "String");
