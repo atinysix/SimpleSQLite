@@ -130,10 +130,10 @@ public class TableCreatorProcessor extends AbstractProcessor {
             String columnName = getColumnName(field);
             String columnType = getColumnType(field);
             String defaultValue = getColumnDefaultValue(field);
-            defaultValue = (ProcessorUtil.isEmpty(defaultValue) ? "" : " defaultValue \'" + defaultValue + "\'");
+            defaultValue = ProcessorUtil.isEmpty(defaultValue) ? "" : " defaultValue \'" + defaultValue + "\'";
             onCreateInitSqlBuilder.addStatement("initSql.append($S)", ", " + columnName + " " + columnType + defaultValue);
         }
-        onCreateInitSqlBuilder.addStatement("initSql.append($S)", ")");
+        onCreateInitSqlBuilder.addStatement("initSql.append(\")\")");
         onCreateInitSqlBuilder.addStatement("return initSql.toString()")
                 .returns(String.class);
         onCreateInitSql = onCreateInitSqlBuilder.build();
@@ -233,10 +233,7 @@ public class TableCreatorProcessor extends AbstractProcessor {
     }
 
     private String getDatabaseName(Element target) {
-        String databaseName = null;
-        if (ProcessorUtil.hasAnnotation(target, Table.class)) {
-            databaseName = target.getAnnotation(Table.class).databaseName();
-        }
+        String databaseName = target.getAnnotation(Table.class).databaseName();
         if (ProcessorUtil.isEmpty(databaseName)) {
             sLogger.e(ProcessorUtil.getClassName(target) + "中@Table注解的 databaseName 不能为空！");
         }

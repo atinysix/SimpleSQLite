@@ -26,12 +26,12 @@ public class ProcessorUtil {
         return s == null || s.length() == 0;
     }
 
-    public static boolean hasAnnotation(Element e, Class<? extends Annotation> c) {
-        return e.getAnnotation(c) != null;
+    public static boolean isAnnotation(TypeElement annotation, Class<? extends Annotation> c) {
+        return annotation.getQualifiedName().toString().equals(c.getCanonicalName());
     }
 
-    public static boolean isAnnotation(TypeElement e, Class<? extends Annotation> c) {
-        return e.getQualifiedName().toString().equals(c.getCanonicalName());
+    public static boolean hasAnnotation(Element e, Class<? extends Annotation> c) {
+        return e.getAnnotation(c) != null;
     }
 
     public static List<Element> getElements(RoundEnvironment environment, Class<? extends Annotation> c) {
