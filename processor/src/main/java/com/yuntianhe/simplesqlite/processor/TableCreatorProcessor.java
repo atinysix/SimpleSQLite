@@ -40,6 +40,7 @@ public class TableCreatorProcessor extends AbstractProcessor {
     public static final ClassName contentValuesClass = ClassName.get("android.content", "ContentValues");
     public static final ClassName cursorWrapperClass = ClassName.get("com.yuntianhe.simplesqlite.library", "CursorWrapper");
     public static final ClassName stringBuilderClass = ClassName.get("java.lang", "StringBuilder");
+    public static final ClassName nullPointerExecptionClass = ClassName.get("java.lang", "NullPointerException");
 
     private Filer mFiler;
     private static ProcessorLogger sLogger;
@@ -94,7 +95,11 @@ public class TableCreatorProcessor extends AbstractProcessor {
         MethodSpec getOpenHelper = MethodSpec.methodBuilder("getOpenHelper")
                 .addModifiers(Modifier.PROTECTED)
                 .addAnnotation(Override.class)
-                .addStatement("return SimpleSQLite.getOpenHelper(getDatabaseName())")
+                .addStatement("RealOpenHelper helper = SimpleSQLite.getOpenHelper(getDatabaseName())")
+                .beginControlFlow("if (helper == null)")
+                .addStatement("throw new $T($S)", nullPointerExecptionClass, "数据库 " + databaseName + " 未找到，请检查" + sourceClassName + "类中注解@Table的 databaseName 属性的值！")
+                .endControlFlow()
+                .addStatement("return helper")
                 .returns(realOpenHelperClass)
                 .build();
 
@@ -258,12 +263,12 @@ public class TableCreatorProcessor extends AbstractProcessor {
         return ColumnType.get(ProcessorUtil.getElementType(field));
     }
 
-    private  String getColumnDefaultValue(Element field) {
+    private String getColumnDefaultValue(Element field) {
         String defaultValue = field.getAnnotation(Column.class).defaultValue();
         return defaultValue;
     }
 
-    private  List<FieldSpec> createFieldSpec(List<Element> fieldList) {
+    private List<FieldSpec> createFieldSpec(List<Element> fieldList) {
         List<FieldSpec> list = new ArrayList<>(fieldList.size());
         for (Element field : fieldList) {
             String fieldName = ProcessorUtil.getElementName(field);

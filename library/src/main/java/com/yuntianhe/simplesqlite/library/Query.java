@@ -230,9 +230,10 @@ public class Query {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("selection: ").append(selectionBuilder.toString()).append("   ");
+        StringBuilder sb = new StringBuilder("{");
+        sb.append("selection: ").append(selectionBuilder.toString()).append(", ");
         sb.append("selectionArgs: ").append(Arrays.toString(getSelectionArgs()));
+        sb.append("}");
         return sb.toString();
     }
 }

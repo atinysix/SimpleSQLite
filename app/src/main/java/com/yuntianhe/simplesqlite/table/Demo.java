@@ -61,9 +61,11 @@ public class Demo extends BaseTableEntity<Demo> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("{");
         sb.append("price: " + price);
         sb.append(", count: " + count);
         sb.append(", limit: " + limit);
+        sb.append("}");
         return sb.toString();
     }
 }

@@ -61,9 +61,11 @@ public class Test extends BaseTableEntity<Test> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("{");
         sb.append("id: " + id);
         sb.append(", text: " + text);
         sb.append(", duration: " + duration);
+        sb.append("}");
         return sb.toString();
     }
 }

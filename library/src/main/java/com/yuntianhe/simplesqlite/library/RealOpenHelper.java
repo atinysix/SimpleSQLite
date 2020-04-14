@@ -44,154 +44,195 @@ public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelpe
 
     @Override
     public <T extends ITableEntity<T>> long add(String table, T t) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.insert(table, null, t.in(t));
+        if (t != null) {
+            Logger.d(table + " add: " + t.toString());
+            SQLiteDatabase db = getWritableDatabase();
+            return db.insert(table, null, t.in(t));
+        }
+        return -1;
     }
 
     @Override
     public <T extends ITableEntity<T>> List<Long> addAll(String table, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
-        try {
-            db.beginTransaction();
-            for (T t : list) {
-                long rowId = db.insert(table, null, t.in(t));
-                idList.add(rowId);
+        if (list != null) {
+            try {
+                db.beginTransaction();
+                for (T t : list) {
+                    Logger.d(table + " add: " + t.toString());
+                    long rowId = db.insert(table, null, t.in(t));
+                    idList.add(rowId);
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
         }
         return idList;
     }
 
     @Override
     public <T extends ITableEntity<T>> long replace(String table, T t) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.replace(table, null, t.in(t));
+        if (t != null) {
+            Logger.d(table + " replace: " + t.toString());
+            SQLiteDatabase db = getWritableDatabase();
+            return db.replace(table, null, t.in(t));
+        }
+        return -1;
     }
 
     @Override
     public <T extends ITableEntity<T>> List<Long> replaceAll(String table, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         List<Long> idList = new ArrayList<>();
-        try {
-            db.beginTransaction();
-            for (T t : list) {
-                long rowId = db.replace(table, null, t.in(t));
-                idList.add(rowId);
+        if (list != null) {
+            try {
+                db.beginTransaction();
+                for (T t : list) {
+                    Logger.d(table + " replace: " + t.toString());
+                    long rowId = db.replace(table, null, t.in(t));
+                    idList.add(rowId);
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
         }
         return idList;
     }
 
     @Override
     public long delete(Query query) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
+        if (query != null) {
+            Logger.d(query.getTableName() + " delete: condition: " + query.toString());
+            SQLiteDatabase db = getWritableDatabase();
+            return db.delete(query.getTableName(), query.getSelection(), query.getSelectionArgs());
+        }
+        return 0;
     }
 
     @Override
     public <T extends ITableEntity<T>> long update(Query query, T t) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+        if (query != null && t != null) {
+            Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + t.toString());
+            SQLiteDatabase db = getWritableDatabase();
+            return db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+        }
+        return 0;
     }
 
     @Override
     public <T extends ITableEntity<T>> long update(Query query, T t, HashMap<String, Object> map) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.update(query.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
+        if (query != null && t != null) {
+            Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + map.toString());
+            SQLiteDatabase db = getWritableDatabase();
+            return db.update(query.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
+        }
+        return 0;
     }
 
     @Override
     public <T extends ITableEntity<T>> long updateAll(Query query, List<T> list) {
         SQLiteDatabase db = getWritableDatabase();
         long rows = 0;
-        try {
-            db.beginTransaction();
-            for (T t : list) {
-                rows += db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+        if (list != null) {
+            try {
+                db.beginTransaction();
+                for (T t : list) {
+                    Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + t.toString());
+                    rows += db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
         }
         return rows;
     }
 
     @Override
     public <T extends ITableEntity<T>> T query(Query query, T t) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.query(query.getTableName(),
-                query.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                query.getGroupBy(),
-                query.getHaving(),
-                query.getOrderBy());
-        if (c != null && c.moveToFirst()) {
-            CursorWrapper wrapper = new CursorWrapper(c);
-            T entity = t.out(wrapper);
-            c.close();
-            return entity;
+        if (query != null) {
+            Logger.d(query.getTableName() + " query: condition: " + query.toString());
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor c = db.query(query.getTableName(),
+                    query.getColumns(),
+                    query.getSelection(),
+                    query.getSelectionArgs(),
+                    query.getGroupBy(),
+                    query.getHaving(),
+                    query.getOrderBy());
+            if (c != null && c.moveToFirst()) {
+                CursorWrapper wrapper = new CursorWrapper(c);
+                T entity = t.out(wrapper);
+                c.close();
+                return entity;
+            }
         }
         return t;
     }
 
     @Override
     public <T extends ITableEntity<T>> List<T> queryAll(Query query, T t) {
-        SQLiteDatabase db = getReadableDatabase();
         List<T> list = new ArrayList<>();
-        Cursor c = db.query(query.getTableName(),
-                query.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                query.getGroupBy(),
-                query.getHaving(),
-                query.getOrderBy(),
-                query.getLimit());
-        if (c != null) {
-            CursorWrapper wrapper = new CursorWrapper(c);
-            while (c.moveToNext()) {
-                T entity = t.out(wrapper);
-                list.add(entity);
+        if (query != null) {
+            Logger.d(query.getTableName() + " query: condition: " + query.toString());
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor c = db.query(query.getTableName(),
+                    query.getColumns(),
+                    query.getSelection(),
+                    query.getSelectionArgs(),
+                    query.getGroupBy(),
+                    query.getHaving(),
+                    query.getOrderBy(),
+                    query.getLimit());
+            if (c != null) {
+                CursorWrapper wrapper = new CursorWrapper(c);
+                while (c.moveToNext()) {
+                    T entity = t.out(wrapper);
+                    list.add(entity);
+                }
+                c.close();
             }
-            c.close();
         }
         return list;
     }
 
     @Override
     public <T extends ITableEntity<T>> T rawQuery(RawQuery rawQuery, T t) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(rawQuery.getSql(), null);
-        if (c != null && c.moveToFirst()) {
-            CursorWrapper wrapper = new CursorWrapper(c);
-            T entity = t.out(wrapper);
-            c.close();
-            return entity;
+        if (rawQuery != null) {
+            Logger.d("rawQuery: sql: " + rawQuery.getSql());
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor c = db.rawQuery(rawQuery.getSql(), null);
+            if (c != null && c.moveToFirst()) {
+                CursorWrapper wrapper = new CursorWrapper(c);
+                T entity = t.out(wrapper);
+                c.close();
+                return entity;
+            }
         }
         return t;
     }
 
     @Override
     public <T extends ITableEntity<T>> List<T> rawQueryAll(RawQuery rawQuery, T t) {
-        SQLiteDatabase db = getReadableDatabase();
         List<T> list = new ArrayList<>();
-        Cursor c = db.rawQuery(rawQuery.getSql(), null);
-        if (c != null) {
-            CursorWrapper wrapper = new CursorWrapper(c);
-            while (c.moveToNext()) {
-                T entity = t.out(wrapper);
-                list.add(entity);
+        if (rawQuery != null) {
+            Logger.d("rawQuery: sql: " + rawQuery.getSql());
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor c = db.rawQuery(rawQuery.getSql(), null);
+            if (c != null) {
+                CursorWrapper wrapper = new CursorWrapper(c);
+                while (c.moveToNext()) {
+                    T entity = t.out(wrapper);
+                    list.add(entity);
+                }
+                c.close();
             }
-            c.close();
         }
         return list;
     }
