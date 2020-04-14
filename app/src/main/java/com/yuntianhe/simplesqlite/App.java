@@ -2,7 +2,7 @@ package com.yuntianhe.simplesqlite;
 
 import android.app.Application;
 
-import com.yuntianhe.simplesqlite.processor.SimpleSQLite;
+import com.yuntianhe.simplesqlite.compiler.SimpleSQLite;
 
 /**
  * 描述:

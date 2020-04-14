@@ -7,8 +7,6 @@ dependencies {
     annotationProcessor autoService
     implementation autoService
     implementation 'com.squareup:javapoet:1.8.0'
-
-//    implementation project(':annotations')
 }
 
 sourceCompatibility = "7"

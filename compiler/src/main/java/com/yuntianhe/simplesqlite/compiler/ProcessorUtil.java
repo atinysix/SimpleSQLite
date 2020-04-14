@@ -1,4 +1,4 @@
-package com.yuntianhe.simplesqlite.processor;
+package com.yuntianhe.simplesqlite.compiler;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 
 /**
  * desc:

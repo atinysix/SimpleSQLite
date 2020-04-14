@@ -5,7 +5,7 @@ import android.content.Context;
 import com.yuntianhe.simplesqlite.annotation.Database;
 import com.yuntianhe.simplesqlite.library.DatabaseDelegate;
 import com.yuntianhe.simplesqlite.library.IDatabaseEntry;
-import com.yuntianhe.simplesqlite.processor.DemoTable;
+import com.yuntianhe.simplesqlite.compiler.DemoTable;
 
 /**
  * 描述:

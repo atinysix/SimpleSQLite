@@ -1,4 +1,4 @@
-package com.yuntianhe.simplesqlite.processor;
+package com.yuntianhe.simplesqlite.compiler;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;

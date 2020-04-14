@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.yuntianhe.simplesqlite.library.AsyncCallback;
 import com.yuntianhe.simplesqlite.library.Query;
-import com.yuntianhe.simplesqlite.processor.DemoTable;
-import com.yuntianhe.simplesqlite.processor.TestTable;
+import com.yuntianhe.simplesqlite.compiler.DemoTable;
+import com.yuntianhe.simplesqlite.compiler.TestTable;
 import com.yuntianhe.simplesqlite.table.Demo;
 import com.yuntianhe.simplesqlite.table.Test;
 

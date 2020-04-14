@@ -6,7 +6,7 @@ import com.yuntianhe.simplesqlite.annotation.Column;
 import com.yuntianhe.simplesqlite.annotation.Table;
 import com.yuntianhe.simplesqlite.library.BaseTableEntity;
 import com.yuntianhe.simplesqlite.library.CursorWrapper;
-import com.yuntianhe.simplesqlite.processor.DemoTable;
+import com.yuntianhe.simplesqlite.compiler.DemoTable;
 
 /**
  * 描述:

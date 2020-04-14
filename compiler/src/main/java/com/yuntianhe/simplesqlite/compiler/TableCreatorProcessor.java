@@ -1,4 +1,4 @@
-package com.yuntianhe.simplesqlite.processor;
+package com.yuntianhe.simplesqlite.compiler;
 
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
@@ -30,7 +30,7 @@ import javax.lang.model.element.TypeElement;
 public class TableCreatorProcessor extends AbstractProcessor {
 
     public static final String POSTFIX = "Table";
-    public static final String PACKAGE_NAME = "com.yuntianhe.simplesqlite.processor";
+    public static final String PACKAGE_NAME = "com.yuntianhe.simplesqlite.compiler";
 
     public static final ClassName abstractTableClass = ClassName.get("com.yuntianhe.simplesqlite.library", "AbstractTable");
     public static final ClassName tableEntityInterface = ClassName.get("com.yuntianhe.simplesqlite.library", "ITableEntity");

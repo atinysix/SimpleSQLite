@@ -1,4 +1,4 @@
-package com.yuntianhe.simplesqlite.processor;
+package com.yuntianhe.simplesqlite.compiler;
 
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
@@ -28,7 +28,7 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 public class OpenHelperProcessor extends AbstractProcessor {
 
-    public static final String PACKAGE_NAME = "com.yuntianhe.simplesqlite.processor";
+    public static final String PACKAGE_NAME = "com.yuntianhe.simplesqlite.compiler";
     public static final String RESULT_CLASS_NAME = "SimpleSQLite";
 
     public static final ClassName openHelperInterface = ClassName.get("com.yuntianhe.simplesqlite.library", "IOpenHelper");

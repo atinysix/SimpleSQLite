@@ -29,6 +29,6 @@ dependencies {
 
     implementation project(path: ':library')
 
-    annotationProcessor project(path: ':processor')
+    annotationProcessor project(path: ':compiler')
 
 }

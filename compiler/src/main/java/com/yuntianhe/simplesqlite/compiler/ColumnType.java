@@ -1,4 +1,4 @@
-package com.yuntianhe.simplesqlite.processor;
+package com.yuntianhe.simplesqlite.compiler;
 
 /**
  * desc:
