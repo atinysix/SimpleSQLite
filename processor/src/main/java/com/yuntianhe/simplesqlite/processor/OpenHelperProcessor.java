@@ -9,7 +9,7 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.yuntianhe.simplesqlite.annotations.Database;
+import com.yuntianhe.simplesqlite.annotation.Database;
 
 import java.util.LinkedHashSet;
 import java.util.List;

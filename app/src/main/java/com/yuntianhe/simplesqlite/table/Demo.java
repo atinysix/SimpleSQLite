@@ -2,8 +2,8 @@ package com.yuntianhe.simplesqlite.table;
 
 import android.content.ContentValues;
 
-import com.yuntianhe.simplesqlite.annotations.Column;
-import com.yuntianhe.simplesqlite.annotations.Table;
+import com.yuntianhe.simplesqlite.annotation.Column;
+import com.yuntianhe.simplesqlite.annotation.Table;
 import com.yuntianhe.simplesqlite.library.BaseTableEntity;
 import com.yuntianhe.simplesqlite.library.CursorWrapper;
 import com.yuntianhe.simplesqlite.processor.DemoTable;
@@ -12,7 +12,7 @@ import com.yuntianhe.simplesqlite.processor.DemoTable;
  * 描述:
  * 作者: daiwj on 2019/2/20 14:39
  */
-@Table(tableName = "demo_table", databaseName = "demo_database")
+@Table(tableName = "hehe_table", databaseName = "demo_database")
 public class Demo extends BaseTableEntity<Demo> {
 
     @Column(name = "price", defaultValue = "1.0")

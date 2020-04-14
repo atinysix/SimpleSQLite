@@ -2,7 +2,7 @@ package com.yuntianhe.simplesqlite.db;
 
 import android.content.Context;
 
-import com.yuntianhe.simplesqlite.annotations.Database;
+import com.yuntianhe.simplesqlite.annotation.Database;
 import com.yuntianhe.simplesqlite.library.DatabaseDelegate;
 import com.yuntianhe.simplesqlite.library.IDatabaseEntry;
 import com.yuntianhe.simplesqlite.processor.DemoTable;

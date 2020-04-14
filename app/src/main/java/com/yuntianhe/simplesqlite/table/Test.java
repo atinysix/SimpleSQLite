@@ -2,8 +2,8 @@ package com.yuntianhe.simplesqlite.table;
 
 import android.content.ContentValues;
 
-import com.yuntianhe.simplesqlite.annotations.Column;
-import com.yuntianhe.simplesqlite.annotations.Table;
+import com.yuntianhe.simplesqlite.annotation.Column;
+import com.yuntianhe.simplesqlite.annotation.Table;
 import com.yuntianhe.simplesqlite.library.BaseTableEntity;
 import com.yuntianhe.simplesqlite.library.CursorWrapper;
 import com.yuntianhe.simplesqlite.processor.TestTable;

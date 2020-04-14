@@ -8,8 +8,8 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.yuntianhe.simplesqlite.annotations.Column;
-import com.yuntianhe.simplesqlite.annotations.Table;
+import com.yuntianhe.simplesqlite.annotation.Column;
+import com.yuntianhe.simplesqlite.annotation.Table;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
