@@ -15,30 +15,30 @@ import java.util.List;
  */
 public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
 
-    private IDatabaseEntry mFactory;
+    private IDatabaseEntry mEntry;
 
-    public RealOpenHelper(Context context, String name, int version, IDatabaseEntry factory) {
+    public RealOpenHelper(Context context, String name, int version, IDatabaseEntry entry) {
         super(context, name, null, version);
-        mFactory = factory;
-        if (factory != null) {
-            Logger.d(factory.getClass().getSimpleName() + " init success(name: " + name + ", version: " + version + ")");
-            factory.onInit(context, name, version);
+        mEntry = entry;
+        if (entry != null) {
+            Logger.d(entry.getClass().getSimpleName() + " init success(name: " + name + ", version: " + version + ")");
+            entry.onInit(context, name, version);
         }
     }
 
     @Override
     public final void onCreate(SQLiteDatabase db) {
-        if (mFactory != null) {
-            mFactory.onCreate(new DatabaseDelegate(db));
-            Logger.d(mFactory.getClass().getSimpleName() + " create success");
+        if (mEntry != null) {
+            mEntry.onCreate(new DatabaseDelegate(db));
+            Logger.d(mEntry.getClass().getSimpleName() + " create success");
         }
     }
 
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (mFactory != null) {
-            mFactory.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
-            Logger.d(mFactory.getClass().getSimpleName() + " upgrade success(oldVersion: " + oldVersion + ", newVersion: " + newVersion + ")");
+        if (mEntry != null) {
+            mEntry.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
+            Logger.d(mEntry.getClass().getSimpleName() + " upgrade success(oldVersion: " + oldVersion + ", newVersion: " + newVersion + ")");
         }
     }
 
