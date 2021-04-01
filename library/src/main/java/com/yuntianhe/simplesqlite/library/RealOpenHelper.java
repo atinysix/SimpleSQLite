@@ -15,30 +15,34 @@ import java.util.List;
  */
 public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
 
-    private IDatabaseEntry mEntry;
+    private IDatabaseHelper mDatabaseHelper;
 
-    public RealOpenHelper(Context context, String name, int version, IDatabaseEntry entry) {
+    public RealOpenHelper(Context context, String name, int version, IDatabaseHelper helper) {
         super(context, name, null, version);
-        mEntry = entry;
-        if (entry != null) {
-            Logger.d(entry.getClass().getSimpleName() + " init success(name: " + name + ", version: " + version + ")");
-            entry.onInit(context, name, version);
+        mDatabaseHelper = helper;
+        if (helper != null) {
+            Logger.d(helper.getClass().getSimpleName()
+                    + " init success(name: " + name
+                    + ", version: " + version + ")");
+            helper.onInit(context, name, version);
         }
     }
 
     @Override
     public final void onCreate(SQLiteDatabase db) {
-        if (mEntry != null) {
-            mEntry.onCreate(new DatabaseDelegate(db));
-            Logger.d(mEntry.getClass().getSimpleName() + " create success");
+        if (mDatabaseHelper != null) {
+            mDatabaseHelper.onCreate(new DatabaseDelegate(db));
+            Logger.d(mDatabaseHelper.getClass().getSimpleName() + " create success");
         }
     }
 
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (mEntry != null) {
-            mEntry.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
-            Logger.d(mEntry.getClass().getSimpleName() + " upgrade success(oldVersion: " + oldVersion + ", newVersion: " + newVersion + ")");
+        if (mDatabaseHelper != null) {
+            mDatabaseHelper.onUpgrade(new DatabaseDelegate(db), oldVersion, newVersion);
+            Logger.d(mDatabaseHelper.getClass().getSimpleName()
+                    + " upgrade success(oldVersion: " + oldVersion
+                    + ", newVersion: " + newVersion + ")");
         }
     }
 
@@ -117,9 +121,13 @@ public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelpe
     @Override
     public <T extends ITableEntity<T>> long update(Query query, T t) {
         if (query != null && t != null) {
-            Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + t.toString());
+            Logger.d(query.getTableName() + " update: condition: " + query.toString()
+                    + ", data: " + t.toString());
             SQLiteDatabase db = getWritableDatabase();
-            return db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+            return db.update(query.getTableName(),
+                    t.in(t),
+                    query.getSelection(),
+                    query.getSelectionArgs());
         }
         return 0;
     }
@@ -127,9 +135,13 @@ public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelpe
     @Override
     public <T extends ITableEntity<T>> long update(Query query, T t, HashMap<String, Object> map) {
         if (query != null && t != null) {
-            Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + map.toString());
+            Logger.d(query.getTableName() + " update: condition: " + query.toString()
+                    + ", data: " + map.toString());
             SQLiteDatabase db = getWritableDatabase();
-            return db.update(query.getTableName(), t.in(map), query.getSelection(), query.getSelectionArgs());
+            return db.update(query.getTableName(),
+                    t.in(map),
+                    query.getSelection(),
+                    query.getSelectionArgs());
         }
         return 0;
     }
@@ -142,8 +154,12 @@ public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelpe
             try {
                 db.beginTransaction();
                 for (T t : list) {
-                    Logger.d(query.getTableName() + " update: condition: " + query.toString() + ", data: " + t.toString());
-                    rows += db.update(query.getTableName(), t.in(t), query.getSelection(), query.getSelectionArgs());
+                    Logger.d(query.getTableName() + " update: condition: " + query.toString()
+                            + ", data: " + t.toString());
+                    rows += db.update(query.getTableName(),
+                            t.in(t),
+                            query.getSelection(),
+                            query.getSelectionArgs());
                 }
                 db.setTransactionSuccessful();
             } catch (Exception e) {
@@ -165,7 +181,8 @@ public final class RealOpenHelper extends SQLiteOpenHelper implements IOpenHelpe
                     query.getSelectionArgs(),
                     query.getGroupBy(),
                     query.getHaving(),
-                    query.getOrderBy());
+                    query.getOrderBy(),
+                    query.getLimit());
             if (c != null && c.moveToFirst()) {
                 CursorWrapper wrapper = new CursorWrapper(c);
                 T entity = t.out(wrapper);

@@ -149,13 +149,13 @@ public class TableCreatorProcessor extends AbstractProcessor {
         // method: in
         MethodSpec in;
         MethodSpec.Builder inBuilder = MethodSpec.methodBuilder("in")
-                .addParameter(ParameterSpec.builder(sourceClass, "arg").build())
+                .addParameter(ParameterSpec.builder(sourceClass, "obj").build())
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
         inBuilder.addStatement("$T in = new $T()", contentValuesClass, contentValuesClass);
         for (Element field : totalColumnList) {
             String columnName = getColumnName(field);
             String fieldName = field.getSimpleName().toString();
-            inBuilder.addStatement("in.put($S, arg.$L)", columnName, fieldName);
+            inBuilder.addStatement("in.put($S, obj.$L)", columnName, fieldName);
         }
         inBuilder.addStatement("return in");
         inBuilder.returns(contentValuesClass);
@@ -164,7 +164,7 @@ public class TableCreatorProcessor extends AbstractProcessor {
         // method: out
         MethodSpec out;
         MethodSpec.Builder outBuilder = MethodSpec.methodBuilder("out")
-                .addParameter(ParameterSpec.builder(cursorWrapperClass, "cv").build())
+                .addParameter(ParameterSpec.builder(cursorWrapperClass, "cw").build())
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
         outBuilder.addStatement("$T out = new $T()", sourceClass, sourceClass);
         for (Element field : totalColumnList) {
@@ -173,30 +173,30 @@ public class TableCreatorProcessor extends AbstractProcessor {
             switch (fieldType) {
                 case "byte":
                 case "Byte":
-                    outBuilder.addStatement("out.$L = cv.getByte($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getByte($L)", fieldName, fieldName);
                     break;
                 case "short":
                 case "Short":
-                    outBuilder.addStatement("out.$L = cv.getShort($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getShort($L)", fieldName, fieldName);
                     break;
                 case "int":
                 case "Integer":
-                    outBuilder.addStatement("out.$L = cv.getInt($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getInt($L)", fieldName, fieldName);
                     break;
                 case "long":
                 case "Long":
-                    outBuilder.addStatement("out.$L = cv.getLong($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getLong($L)", fieldName, fieldName);
                     break;
                 case "float":
                 case "Float":
-                    outBuilder.addStatement("out.$L = cv.getFloat($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getFloat($L)", fieldName, fieldName);
                     break;
                 case "double":
                 case "Double":
-                    outBuilder.addStatement("out.$L = cv.getDouble($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getDouble($L)", fieldName, fieldName);
                     break;
                 default:
-                    outBuilder.addStatement("out.$L = cv.getString($L)", fieldName, fieldName);
+                    outBuilder.addStatement("out.$L = cw.getString($L)", fieldName, fieldName);
                     break;
             }
         }

@@ -6,7 +6,7 @@ import android.content.Context;
  * desc:
  * author: daiwj on 2020-04-11 22:03
  */
-public interface IDatabaseEntry {
+public interface IDatabaseHelper {
 
     void onInit(Context context, String name, int version);
 

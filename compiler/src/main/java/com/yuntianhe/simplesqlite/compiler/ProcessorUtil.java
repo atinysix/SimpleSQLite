@@ -34,12 +34,8 @@ public class ProcessorUtil {
     }
 
     public static List<Element> getElements(RoundEnvironment environment, Class<? extends Annotation> c) {
-        List<Element> list = new ArrayList<>();
         Set<? extends Element> targetSet = environment.getElementsAnnotatedWith(c);
-        for (Element target : targetSet) {
-            list.add(target);
-        }
-        return list;
+        return new ArrayList<>(targetSet);
     }
 
     public static List<Element> getInnerElements(Element outerElement, Class<? extends Annotation>... classList) {
